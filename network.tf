@@ -34,15 +34,23 @@ module "app" {
 # SECURITY GROUPS
 
 resource "aws_security_group" "nginx_sg" {
-  name   = "${local.naming_prefix}-nginx_sg"
-  vpc_id = module.app.vpc_id
+  name       = "${local.naming_prefix}-nginx_sg"
+  vpc_id     = module.app.vpc_id
+  depends_on = [aws_security_group.alb_sg]
 
-  # HTTP access from anywhere
+  # HTTP access from ALB SG
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr_block]
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id] # allow ALB SG
+  }
+
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id] # allow ALB SG
   }
 
   # outbound internet access
@@ -55,6 +63,8 @@ resource "aws_security_group" "nginx_sg" {
 
   tags = local.common_tags
 }
+
+
 
 resource "aws_security_group" "alb_sg" {
   name   = "${local.naming_prefix}-nginx_alb_sg"
@@ -68,6 +78,13 @@ resource "aws_security_group" "alb_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # outbound internet access
   egress {
     from_port   = 0
@@ -79,3 +96,28 @@ resource "aws_security_group" "alb_sg" {
   tags = local.common_tags
 }
 
+
+
+resource "aws_security_group" "rds_sg" {
+  name   = "${local.naming_prefix}-rds_sg"
+  vpc_id = module.app.vpc_id
+
+  # HTTP access from anywhere
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [module.app.private_subnets.cidr_blocks]
+  }
+
+  # outbound internet access
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = local.common_tags
+
+}

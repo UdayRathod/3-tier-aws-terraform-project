@@ -19,13 +19,14 @@ resource "aws_launch_template" "terracloud-lauchtemplate" {
 }
 
 resource "aws_autoscaling_group" "terracloud-autoscaling-group" {
-  desired_capacity     = 2
-  max_size             = 4
-  min_size             = 2
-  vpc_zone_identifier  = module.app.private_subnets.ids[*]
-  health_check_type    = "EC2"
-  termination_policies = ["OldestInstance"]
-  target_group_arns    = [aws_lb_target_group.nginx.arn]
+  desired_capacity          = 2
+  max_size                  = 4
+  min_size                  = 2
+  vpc_zone_identifier       = slice(module.app.private_subnets.ids, 0, 2)
+  health_check_type         = "ELB"
+  health_check_grace_period = 300
+  termination_policies      = ["OldestInstance"]
+  target_group_arns         = [aws_lb_target_group.nginx-http.arn, aws_lb_target_group.nginx-https.arn]
 
   lifecycle {
     ignore_changes = [min_size, desired_capacity, target_group_arns]

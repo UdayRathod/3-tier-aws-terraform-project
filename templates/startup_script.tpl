@@ -18,5 +18,5 @@ INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 INSTANCE_NAME="${var.Instance_Name}-$${INSTANCE_ID}"
 
 # Tag the instance with the unique name
-/usr/local/bin/aws  ec2 create-tags --resources $INSTANCE_ID --tags Key=Name,Value=$INSTANCE_NAME --region us-west-1
+/usr/local/bin/aws  ec2 create-tags --resources $INSTANCE_ID --tags Key=Name,Value=$INSTANCE_NAME --region us-east-1
 

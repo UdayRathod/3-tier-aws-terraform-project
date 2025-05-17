@@ -2,9 +2,9 @@ resource "aws_db_subnet_group" "terracloud-db-subnet-group" {
   name       = "terracloud-db-subnet-group"
   subnet_ids = slice(module.app.private_subnets.ids, 2, 4)
 
-  tags = {
+  tags = merge(local.common_tags, {
     Name = "${local.naming_prefix}-rds-subent-group"
-  }
+  })
 }
 
 resource "aws_db_instance" "terracloud-rds-db" {
@@ -23,8 +23,9 @@ resource "aws_db_instance" "terracloud-rds-db" {
   deletion_protection         = true
   storage_encrypted           = true
   backup_retention_period     = 7
+  vpc_security_group_ids      = [aws_security_group.rds_sg.id]
 
-  vpc_security_group_ids = []
+  tags = local.common_tags
 }
 
 output "rds_endpoint" {

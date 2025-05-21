@@ -1,16 +1,31 @@
 #! /bin/bash
 sudo yum update -y
-sudo yum install -y unzip curl
-sudo amazon-linux-extras install -y nginx1
-sudo service nginx start
-aws s3 cp s3://${s3_bucket_name}/website/index.html /home/ec2-user/index.html
-aws s3 cp s3://${s3_bucket_name}/website/Terracloud.png /home/ec2-user/Terracloud.png
-sudo rm /usr/share/nginx/html/index.html
-sudo cp /home/ec2-user/index.html /usr/share/nginx/html/index.html
-sudo cp /home/ec2-user/Terracloud.png /usr/share/nginx/html/Terracloud.png
-sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-sudo unzip awscliv2.zip
-sudo ./aws/install
+sudo amazon-linux-extras enable php8.0
+sudo yum clean metadata
+yum install -y unzip curl php php-mysqlnd nginx
+sudo systemctl start php-fpm
+sudo systemctl enable php-fpm
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+# Configure NGINX to process PHP
+sed -i '/location \/ {/!b;n;c\        index  index.php index.html index.htm;' /etc/nginx/nginx.conf
+cat >> /etc/nginx/nginx.conf << 'EOCONFIG'
+
+    location ~ \.php$ {
+        root           /usr/share/nginx/html;
+        fastcgi_pass   127.0.0.1:9000;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+    }
+EOCONFIG
+
+aws s3 cp s3://${s3_bucket_name}/website/index.php /usr/share/nginx/html/index.php
+aws s3 cp s3://${s3_bucket_name}/website/Terracloud.png /usr/share/nginx/html/Terracloud.png
+systemctl restart nginx
+
+
 # Fetch instance ID and other metadata
 INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 

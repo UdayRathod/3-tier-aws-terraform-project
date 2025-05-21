@@ -9,8 +9,8 @@ locals {
   s3_bucket_name = "${lower(local.naming_prefix)}-${random_integer.s3.result}"
 
   website_content = {
-    website = "/website/index.html"
-    logo    = "/website/Globo_logo_Vert.png"
+    website = "/website/index.php"
+    logo    = "/website/Terracloud.png"
   }
 
   naming_prefix = "${var.naming_prefix}-${var.environment}"

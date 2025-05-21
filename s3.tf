@@ -27,11 +27,15 @@ resource "aws_s3_bucket" "backend-s3" {
   tags = local.common_tags
 }
 
-# Enabling default encryption on backend S3 bucket
-resource "apply_server_side_encryption_by_default" "backend-s3-encrpytion" {
-  bucket = aws_s3_bucket.backend-s3.id
+# Example: using AES256 encryption on S3
+resource "aws_s3_bucket_server_side_encryption_configuration" "backend-s3-encryption" {
+  bucket = aws_s3_bucket.backend-s3.bucket
   rule {
-    sse_algorithm = "AES256"
+    apply_server_side_encryption_by_default {
+      # Choose your encryption algorithm
+      sse_algorithm = "AES256"
+
+    }
   }
 }
 

@@ -1,9 +1,10 @@
 <?php
 // --- RDS MySQL Connection Details ---
-$host = "your-rds-endpoint.rds.amazonaws.com";  // Replace with your RDS endpoint
-$dbname = "your_database_name";                // Replace with your DB name
-$username = "your_db_username";                // Replace with your DB username
-$password = "your_db_password";                // Replace with your DB password
+
+$host = "${rds_endpoint}";
+$dbname = "${db_name}";
+$username = "${db_user}";
+$password = "${db_password}";
 
 // --- Connect to RDS MySQL ---
 $conn = new mysqli($host, $username, $password, $dbname);
@@ -30,3 +31,7 @@ if ($conn->connect_error) {
     <h3><?php echo $db_status; ?></h3>
 </body>
 </html>
+
+
+
+

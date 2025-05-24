@@ -10,7 +10,7 @@ resource "aws_s3_object" "website_content" {
   for_each = local.website_content
 
   bucket = module.web_app_s3.web_bucket.id
-  key    = each.value
+  key    = each.key == "website" ? "website/index.php" : "website/Terracloud.png"
   source = "${path.root}/${each.value}"
 
   tags = local.common_tags

@@ -11,7 +11,7 @@ resource "aws_s3_object" "website_content" {
 
   bucket = module.web_app_s3.web_bucket.id
   key    = each.key == "website" ? "website/index.php" : "website/Terracloud.png"
-  source = "${path.root}/${each.value}"
+  source = "${path.module}/${each.value}"
 
   tags = local.common_tags
 
@@ -19,7 +19,7 @@ resource "aws_s3_object" "website_content" {
 
 
 
-# S3 bucket for backend, we did not used aboe s3 module as that module is create iam polices, role releated to ALB.
+# S3 bucket for backend, we did not used above s3 module as that module is creating iam polices & role releated to ALB.
 
 resource "aws_s3_bucket" "backend-s3" {
   bucket = "s3-bucket-terraform-terracloud-state"

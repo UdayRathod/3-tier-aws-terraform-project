@@ -1,3 +1,4 @@
+<<-EOF
 #! /bin/bash
 sudo yum update -y
 sudo amazon-linux-extras enable php8.0
@@ -21,17 +22,17 @@ cat >> /etc/nginx/nginx.conf << 'EOCONFIG'
     }
 EOCONFIG
 
-aws s3 cp s3://${s3_bucket_name}/website/index.php /usr/share/nginx/html/index.php
-aws s3 cp s3://${s3_bucket_name}/website/Terracloud.png /usr/share/nginx/html/Terracloud.png
+export S3_BUCKET_NAME="${module.web_app_s3.web_bucket.id}"
+aws s3 cp s3://${S3_BUCKET_NAME}/website/index.php /usr/share/nginx/html/index.php
+aws s3 cp s3://${S3_BUCKET_NAME}/website/Terracloud.png /usr/share/nginx/html/Terracloud.png
 systemctl restart nginx
-
 
 # Fetch instance ID and other metadata
 INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 
 # Set the instance name based on the stack ID, availability zone, and instance ID
-INSTANCE_NAME="${var.Instance_Name}-$${INSTANCE_ID}"
+INSTANCE_NAME="Terra-cloud-web-app-nginx-$${INSTANCE_ID}"
 
 # Tag the instance with the unique name
 /usr/local/bin/aws  ec2 create-tags --resources $INSTANCE_ID --tags Key=Name,Value=$INSTANCE_NAME --region us-east-1
-
+EOF

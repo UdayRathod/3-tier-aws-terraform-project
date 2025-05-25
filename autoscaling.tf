@@ -14,7 +14,7 @@ resource "aws_launch_template" "terracloud-lauchtemplate" {
     name = "module.web_app_s3.instance_profile.name"
   }
 
-  depends_on = [module.web_app_s3]
+  depends_on = [module.web_app_s3,aws_db_instance.terracloud-rds-db]
   tags       = local.common_tags
 }
 

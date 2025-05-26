@@ -6,7 +6,7 @@ AWS VPC
 AWS Load balancer for Presentation layer facing web.
 AWS Autoscaling group for handling and hosting the ngnix,php code.
 AWS RDS for storing the data for the php application.
-AWS S3 for storing the userdata script and the applications dependencies like the php code & terracloud image, also another S3 is created for stroing the Load balancer logs.
+AWS S3 for storing the userdata script and the applications dependencies like the php code & terracloud image, also another S3 is created for storing the Load balancer logs.
 
 
 Terraform resources:
@@ -48,4 +48,6 @@ To run this code:
 4) Deploy the code: terraform apply
 
 5) To destroy everything Terraform created: terraform destroy
+
+6) To store the state file in cloud S3, deploy the backend folder code for s3 backend config and s3 bucket creation, you can run this folder    initially so the S3 bcuket is created & stores the state file and then deploy the rest of code.
 

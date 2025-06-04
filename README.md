@@ -1,16 +1,16 @@
 # aws-terraform-project
 Repo for highly available, scalable php web facing application deployed on AWS using terraform.
 
-AWS Services used: 
+# AWS Services configured: 
 AWS VPC
 AWS Load balancer for Presentation layer facing web.
 AWS Autoscaling group for handling and hosting the ngnix,php code.
 AWS RDS for storing the data for the php application.
 AWS S3 for storing the userdata script and the applications dependencies like the php code & terracloud image, also another S3 is created for storing the Load balancer logs.
 
-Architecture for this project is shown in file: image.png
+# Architecture for this project is shown in file: image.png
 
-Terraform resources:
+# Terraform resources used in this repo:
 VPC module from terraform registry.
 S3 module created locally.
 Variables for storing the variable values.
@@ -22,15 +22,16 @@ Website folder for sotring the php application code & our company logo.
 Backend configuration block for storing the state file in S3.
 
 
-To run this code:
+# Getting Started
+To get started with deploying the AWS services using Terraform, follow these steps:
 
-1) First connnect to your AWS account by one of the below methos:
-    #Provide your AWS creds directly in backend conf :
-    #AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
-    #AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
+1) Clone this repository to your local machine.
 
-    #OR you can use Env variables :
-    # For Linux and MacOS
+2) Install Terraform (version X.X.X) from the official Terraform website here.
+
+3) Configure your AWS credentials by setting the necessary environment variables or using the AWS CLI aws configure command:
+
+# For Linux and MacOS
     #export AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
     #export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
 
@@ -38,17 +39,13 @@ To run this code:
     #$env:AWS_ACCESS_KEY_ID="YOUR_ACCESS_KEY"
     #$env:AWS_SECRET_ACCESS_KEY="YOUR_SECRET_ACCESS_KEY"
 
-    #OR you can create a profile in aws_credentails file and pass this profile as an argument here
 
-    #OR you can pass the AWS access key & secret key creds during the init command with --flag
+4) Navigate to the desired service directory within the repository.
 
-2) Do the Terraform initilization & Sanity checks by command: terraform init, terraform fmt -recursive, terraform validate
+5) Run terraform init to initialize the Terraform workspace.
 
-3) Plan the code: terraform plan
+6) Run terraform plan to review the planned infrastructure changes.
 
-4) Deploy the code: terraform apply
+7) Run terraform apply to apply the Terraform configurations and provision the AWS resources.
 
-5) To destroy everything Terraform created: terraform destroy
-
-6) To store the state file in cloud S3, deploy the "backend" folder code for s3 backend config and s3 bucket creation, you can run "backend" folder initially so the S3 bucket is created & stores the state file and then deploy the rest of code.
-
+8) To store the state file in cloud S3, deploy the "backend" folder code for s3 backend config and s3 bucket creation, you can run "backend" folder initially so the S3 bucket is created & stores the state file and then deploy the rest of code.

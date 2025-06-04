@@ -1,5 +1,7 @@
 # aws-terraform-project
 Repo for highly available, scalable php web facing application deployed on AWS using terraform.
+The configurations has both : "Non-Modularized" and "Modularized" code. 
+VPC resource uses the versioned terraform registry module, S3 uses the module created locally & other resources follow Non-Modularized implementation.
 
 # AWS Services configured: 
 AWS VPC

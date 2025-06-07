@@ -51,3 +51,16 @@ To get started with deploying the AWS services using Terraform, follow these ste
 7) Run terraform apply to apply the Terraform configurations and provision the AWS resources.
 
 8) To store the state file in cloud S3, deploy the "backend" folder code for s3 backend config and s3 bucket creation, you can run "backend" folder initially so the S3 bucket is created & stores the state file and then deploy the rest of code.
+
+
+## Contributing
+
+Contributions are welcome!  
+To contribute, please fork the repository, create a new branch for your feature or bugfix, and submit a pull request.  
+For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
